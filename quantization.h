@@ -50,6 +50,14 @@ void invokeInt4WeightExtraction(const int8_t* weight,
                                 cudaStream_t stream);
 
 template<typename T>
+void invokeInt4WeightExtractionNoTrans(const int8_t* weight,
+                                const T* scale_list,
+                                T* output,
+                                const int n,
+                                const int k,
+                                cudaStream_t stream);
+
+template<typename T>
 void invokeInt8WeightExtraction(const int8_t* weight,
                                 const T* scale_list,
                                 T* output,

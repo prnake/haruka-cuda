@@ -479,6 +479,36 @@ template void invokeInt4WeightExtraction(
     const int8_t* weight, const half* scale_list, half* output, const int n, const int k, cudaStream_t stream);
 
 
+template<typename T>
+__global__ void
+int4WeightExtractionNoTransDevice(const int8_t* weight, const T* scale_list, T* output, const int n, const int k)
+{
+    for(int i = blockIdx.x * k + threadIdx.x; i < blockIdx.x * k + k; i += blockDim.x){
+        int8_t original = weight[i];
+        int8_t high = original >> 4;
+        int8_t low = original << 4; low = low >> 4;
+        output[i * 2] = T(high) * scale_list[blockIdx.x];
+        output[i * 2 + 1] = T(low) * scale_list[blockIdx.x];
+    }
+}
+
+template<typename T>
+void invokeInt4WeightExtractionNoTrans(
+    const int8_t* weight, const T* scale_list, T* output, const int n, const int k, cudaStream_t stream)
+{
+    dim3 grid(n);
+    dim3 block(1024);
+
+    int4WeightExtractionNoTransDevice<T><<<grid, block, 0, stream>>>(weight, scale_list, output, n, k / 2);
+}
+
+template void invokeInt4WeightExtractionNoTrans(
+    const int8_t* weight, const float* scale_list, float* output, const int n, const int k, cudaStream_t stream);
+
+template void invokeInt4WeightExtractionNoTrans(
+    const int8_t* weight, const half* scale_list, half* output, const int n, const int k, cudaStream_t stream);
+
+
 // __global__ void
 // int4WeightCompressionDevice(const int8_t* input,
 //                                 int8_t* output,
