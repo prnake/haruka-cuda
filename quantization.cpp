@@ -129,11 +129,11 @@ int main(){
         cudaProfilerStart();
         gettimeofday(&start, NULL);
 
-        invokeInt4WeightExtraction(weight, scale_list, weight16, k, n, stream);
+        invokeInt4WeightExtractionNoTrans(weight, scale_list, weight16, n, k, stream);
         cudaStreamSynchronize(stream);
 
         cublasGemmEx(handle,
-                        CUBLAS_OP_N,
+                        CUBLAS_OP_T,
                         CUBLAS_OP_N,
                         n,
                         m,
@@ -141,7 +141,7 @@ int main(){
                         &alpha,
                         weight16,
                         CUDA_R_16F,
-                        n,
+                        k,
                         input,
                         CUDA_R_16F,
                         k,
