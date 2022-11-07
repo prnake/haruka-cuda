@@ -60,40 +60,40 @@ int main(){
     total_time = 0;
 
     int algo = -1;
-    // for (int i = 0; i < iteration; ++i) {
-    //     struct timeval start, end;
-    //     cudaDeviceSynchronize();
-    //     cudaProfilerStart();
-    //     gettimeofday(&start, NULL);
+    for (int i = 0; i < iteration; ++i) {
+        struct timeval start, end;
+        cudaDeviceSynchronize();
+        cudaProfilerStart();
+        gettimeofday(&start, NULL);
 
-    //     cublasGemmEx(handle,
-    //                     CUBLAS_OP_N,
-    //                     CUBLAS_OP_N,
-    //                     n,
-    //                     m,
-    //                     k,
-    //                     &alpha,
-    //                     weight16,
-    //                     CUDA_R_16F,
-    //                     n,
-    //                     input,
-    //                     CUDA_R_16F,
-    //                     k,
-    //                     &beta,
-    //                     output,
-    //                     CUDA_R_16F,
-    //                     n,
-    //                     CUDA_R_16F,
-    //                     static_cast<cublasGemmAlgo_t>(-1));
-    //     cudaDeviceSynchronize();
+        cublasGemmEx(handle,
+                        CUBLAS_OP_N,
+                        CUBLAS_OP_N,
+                        n,
+                        m,
+                        k,
+                        &alpha,
+                        weight16,
+                        CUDA_R_16F,
+                        n,
+                        input,
+                        CUDA_R_16F,
+                        k,
+                        &beta,
+                        output,
+                        CUDA_R_16F,
+                        n,
+                        CUDA_R_16F,
+                        static_cast<cublasGemmAlgo_t>(-1));
+        cudaDeviceSynchronize();
 
-    //     gettimeofday(&end, NULL);
-    //     cudaProfilerStop();
-    //     if (i > 0)
-    //         total_time += (end.tv_sec - start.tv_sec) * 1000 + (end.tv_usec - start.tv_usec) * 0.001;
-    // }
-    // if (total_time > 0)
-    //     printf("fp16 gemm with algo %d time: %.3f ms\n", algo, total_time / (iteration - 1));
+        gettimeofday(&end, NULL);
+        cudaProfilerStop();
+        if (i > 0)
+            total_time += (end.tv_sec - start.tv_sec) * 1000 + (end.tv_usec - start.tv_usec) * 0.001;
+    }
+    if (total_time > 0)
+        printf("fp16 gemm with algo %d time: %.3f ms\n", algo, total_time / (iteration - 1));
 
 
     // for (int i = 0; i < 100; ++i) {
@@ -104,22 +104,22 @@ int main(){
 
     // total_time = 0;
 
-    // for (int i = 0; i < iteration; ++i) {
-    //     struct timeval start, end;
-    //     cudaDeviceSynchronize();
-    //     cudaProfilerStart();
-    //     gettimeofday(&start, NULL);
+    for (int i = 0; i < iteration; ++i) {
+        struct timeval start, end;
+        cudaDeviceSynchronize();
+        cudaProfilerStart();
+        gettimeofday(&start, NULL);
 
-    //     int8WeightPerChannelLdkMultiplicationLauncher(weight, input, scale_list, output, m, n, k, stream);
-    //     cudaStreamSynchronize(stream);
+        int8WeightPerChannelLdkMultiplicationLauncher(weight, input, scale_list, output, m, n, k, stream);
+        cudaStreamSynchronize(stream);
 
-    //     gettimeofday(&end, NULL);
-    //     cudaProfilerStop();
-    //     if (i > 0)
-    //         total_time += (end.tv_sec - start.tv_sec) * 1000 + (end.tv_usec - start.tv_usec) * 0.001;
-    // }
-    // if (total_time > 0)
-    //     printf("fp16(int8, fp16) time: %.3f ms\n", total_time / (iteration - 1));
+        gettimeofday(&end, NULL);
+        cudaProfilerStop();
+        if (i > 0)
+            total_time += (end.tv_sec - start.tv_sec) * 1000 + (end.tv_usec - start.tv_usec) * 0.001;
+    }
+    if (total_time > 0)
+        printf("fp16(int8, fp16) time: %.3f ms\n", total_time / (iteration - 1));
 
     total_time = 0;
 
