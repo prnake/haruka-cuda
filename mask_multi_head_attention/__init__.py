@@ -171,9 +171,9 @@ def _test_fused_multi_head_attention_inference(
 
         # print(ref_out.reshape(-1))
         # print(fused_out.reshape(-1))
-        # print((ref_out-fused_out).abs().min())
+        # print((ref_out-fused_out).abs().max())
 
-        test_case.assertTrue(np.allclose(ref_out.cpu().numpy(), fused_out.cpu().numpy(), atol=1e-2, rtol=1e-2))
+        test_case.assertTrue(torch.allclose(ref_out, fused_out, atol=1e-2, rtol=1e-2))
     print(batch_size, num_heads, query_seq_len, kv_seq_len, query_head_size, value_head_size, dtype)
 
 class TestFusedMultiHeadAttentionInference(unittest.TestCase):
@@ -227,6 +227,7 @@ class TestFusedMultiHeadAttentionInference(unittest.TestCase):
 
 
 if __name__ == "__main__":
+    torch.set_printoptions(precision=10)
     cuda_module = load()
     unittest.main()
     # pass

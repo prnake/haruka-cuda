@@ -616,8 +616,8 @@ struct AttentionKernel {
       //   printf("%d %d\n", i, p.causal_mask_ptr[i]);
       // Mask out last if causal
       // causal_mask_ptr
-      if (p.num_keys - iter_key_start <= kKeysPerBlock) {
-        auto query_start = blockIdx.x * kQueriesPerBlock;
+      auto query_start = blockIdx.x * kQueriesPerBlock;
+      if (p.causal_mask_ptr[query_start] - iter_key_start < kKeysPerBlock) {
         auto lane_offset = MM0::ScalingCoefsUpdater::get_lane_offset(
             lane_id(), warp_id(), iteratorC_tile_offset);
         int32_t last_col;
