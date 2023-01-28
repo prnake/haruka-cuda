@@ -1,0 +1,6 @@
+[submodule "add_example"]
+	path = add_example
+	url = https://github.com/godweiyang/NN-CUDA-Example
+[submodule "cutlass"]
+	path = cutlass
+	url = https://github.com/NVIDIA/cutlass
